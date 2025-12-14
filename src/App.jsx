@@ -32,7 +32,9 @@ const handleSubmit = async (e) => {
   try {
     const res = await fetch("/", {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: { "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json"
+       },
       body: encode(Object.fromEntries(formData)),
     });
 
