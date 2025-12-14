@@ -29,24 +29,35 @@ const handleSubmit = async (e) => {
   const form = e.currentTarget;
   const formData = new FormData(form);
 
+  // IMPORTANT: ensure Netlify sees the form name in the payload
+  formData.set("form-name", "contact");
+
   try {
     const res = await fetch("/", {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded",
-        "Accept": "application/json"
-       },
-      body: encode(Object.fromEntries(formData)),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json",
+      },
+      body: new URLSearchParams(formData).toString(),
     });
 
-    if (!res.ok) throw new Error("Network response was not ok");
+    console.log("Netlify form response:", res.status, res.statusText);
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.log("Netlify response body:", text);
+      throw new Error(`Submit failed: ${res.status}`);
+    }
 
     form.reset();
     setStatus("success");
   } catch (err) {
-    console.error(err);
+    console.error("Form submit error:", err);
     setStatus("error");
   }
 };
+
 
   const workItems = useMemo(
     () => [
