@@ -522,7 +522,7 @@ const AgroTechPortfolio = () => {
                 data-netlify="true"
                 data-netlify-honeypot="bot-field"
                 className="grid gap-4"
-                action="/thank-you"
+                action="/thank-you.html"
               >
                 <input type="hidden" name="form-name" value="contact" />
                 <input type="hidden" name="bot-field" />
