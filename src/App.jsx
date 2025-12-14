@@ -615,7 +615,7 @@ const AgroTechPortfolio = () => {
                 </a>
 
                 <a
-                  href="/.pdf"
+                  href="/Joshua.pdf"
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-white transition"
@@ -636,7 +636,7 @@ const AgroTechPortfolio = () => {
 
         {/* Footer */}
         <footer className="mt-16 pb-10 text-center">
-          <p className="text-sm font-semibold text-slate-900">Agrotech Frontend Specialist</p>
+          <p className="text-sm font-semibold text-slate-900">Joshua - Agrotech Frontend Specialist</p>
           <p className="mt-2 text-sm text-slate-600">
             Building calm, mobile-first systems for farmer data, communication, and operations.
           </p>
