@@ -520,9 +520,13 @@ const AgroTechPortfolio = () => {
                 name="contact"
                 method="POST"
                 data-netlify="true"
+                data-netlify-honeypot="bot-field"
                 className="grid gap-4"
+                action="/thank-you"
               >
                 <input type="hidden" name="form-name" value="contact" />
+                <input type="hidden" name="bot-field" />
+
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
@@ -628,7 +632,7 @@ const AgroTechPortfolio = () => {
               </div>
 
               <p className="mt-6 text-xs text-slate-500">
-                Tip: Keep your message short. I’ll ask follow-up questions if needed.
+                Tip: I will respond shortly
               </p>
             </div>
           </div>
