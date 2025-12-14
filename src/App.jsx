@@ -1,6 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { Menu, X, Check, ChevronRight, Mail, MessageSquare } from "lucide-react";
 
+function encode(data) {
+  return Object.keys(data)
+    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&");
+}
 const AgroTechPortfolio = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -14,6 +19,32 @@ const AgroTechPortfolio = () => {
     ],
     []
   );
+
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setStatus("sending");
+
+  const form = e.currentTarget;
+  const formData = new FormData(form);
+
+  try {
+    const res = await fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encode(Object.fromEntries(formData)),
+    });
+
+    if (!res.ok) throw new Error("Network response was not ok");
+
+    form.reset();
+    setStatus("success");
+  } catch (err) {
+    console.error(err);
+    setStatus("error");
+  }
+};
 
   const workItems = useMemo(
     () => [
@@ -522,7 +553,7 @@ const AgroTechPortfolio = () => {
                 data-netlify="true"
                 data-netlify-honeypot="bot-field"
                 className="grid gap-4"
-                action="/thank-you.html"
+                 onSubmit={handleSubmit}
               >
                 <input type="hidden" name="form-name" value="contact" />
                 <input type="hidden" name="bot-field" />
@@ -596,6 +627,20 @@ const AgroTechPortfolio = () => {
                   Send message
                 </button>
               </form>
+
+
+              {status === "success" && (
+  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+    ✅ Message sent. I’ll get back to you shortly.
+  </div>
+)}
+
+{status === "error" && (
+  <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
+    ❌ Something went wrong. Please try again or message me on WhatsApp.
+  </div>
+)}
+
             </div>
 
             <div className="lg:col-span-2 rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
@@ -617,6 +662,18 @@ const AgroTechPortfolio = () => {
                   <MessageSquare className="h-5 w-5 text-emerald-800" />
                   WhatsApp
                 </a>
+
+                <a
+  href="https://www.linkedin.com/in/joshua-adelegan-2a751b281/"
+  target="_blank"
+  rel="noreferrer"
+  className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-white transition"
+>
+  <span className="inline-flex h-5 w-5 items-center justify-center rounded-md bg-[#0A66C2] text-xs font-bold text-white">
+    in
+  </span>
+  LinkedIn
+</a>
 
                 <a
                   href="/Joshua.pdf"
