@@ -259,6 +259,14 @@ const handleSubmit = async (e) => {
 
         <div className="space-y-2">
           <a
+            href="https://www.linkedin.com/in/joshua-adelegan-2a751b281/"
+            target="_blank"
+            rel="noreferrer"
+            className="block rounded-xl bg-white/10 px-3 py-2 text-sm font-semibold hover:bg-white/15 transition"
+          >
+            LinkedIn
+          </a>
+          <a
             href="/Joshua.pdf"
             target="_blank"
             rel="noreferrer"
