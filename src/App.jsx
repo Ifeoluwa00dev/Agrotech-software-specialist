@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import emailjs from "@emailjs/browser";
 import { Menu, X, Check, ChevronRight, Mail, MessageSquare } from "lucide-react";
 
 function encode(data) {
@@ -24,36 +25,23 @@ const AgroTechPortfolio = () => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+
   setStatus("sending");
 
-  const form = e.currentTarget;
-  const formData = new FormData(form);
-
-  // IMPORTANT: ensure Netlify sees the form name in the payload
-  formData.set("form-name", "contact");
-
   try {
-    const res = await fetch(window.location.pathname, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Accept": "application/json",
-      },
-      body: new URLSearchParams(formData).toString(),
-    });
+    const result = await emailjs.sendForm(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      e.currentTarget,
+      { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
+    );
 
-    console.log("Netlify form response:", res.status, res.statusText);
+    console.log("EmailJS success:", result);
 
-    if (!res.ok) {
-      const text = await res.text();
-      console.log("Netlify response body:", text);
-      throw new Error(`Submit failed: ${res.status}`);
-    }
-
-    form.reset();
+    e.currentTarget.reset();
     setStatus("success");
   } catch (err) {
-    console.error("Form submit error:", err);
+    console.error("EmailJS error:", err);
     setStatus("error");
   }
 };
@@ -233,6 +221,8 @@ const handleSubmit = async (e) => {
       </div>
     </article>
   );
+
+  console.log("STATUS:", status);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -569,10 +559,7 @@ const handleSubmit = async (e) => {
             <div className="lg:col-span-3 rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
               {/* Netlify-ready form */}
               <form
-                name="contact"
-                method="POST"
-                data-netlify="true"
-                data-netlify-honeypot="bot-field"
+
                 className="grid gap-4"
                  onSubmit={handleSubmit}
               >
@@ -584,7 +571,7 @@ const handleSubmit = async (e) => {
                   <div>
                     <label className="text-sm font-semibold text-slate-900">Name</label>
                     <input
-                      name="name"
+                      name="from_name"
                       className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-200"
                       placeholder="Your name"
                       required
@@ -594,7 +581,7 @@ const handleSubmit = async (e) => {
                   <div>
                     <label className="text-sm font-semibold text-slate-900">Email</label>
                     <input
-                      name="email"
+                      name="reply_to"
                       type="email"
                       className="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-200"
                       placeholder="you@email.com"
@@ -641,6 +628,7 @@ const handleSubmit = async (e) => {
                   />
                 </div>
 
+              
                 <button
                   type="submit"
                   className="rounded-2xl bg-emerald-800 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-900 transition"
@@ -649,18 +637,33 @@ const handleSubmit = async (e) => {
                 </button>
               </form>
 
+              {(status === "success" || status === "error") && (
+  <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4">
+    <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl border border-slate-200">
+      <p className={`text-sm font-semibold ${status === "success" ? "text-emerald-800" : "text-red-700"}`}>
+        {status === "success" ? "✅ Message sent" : "✅ Message sent"}
+      </p>
 
-              {status === "success" && (
-  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-    ✅ Message sent. I’ll get back to you shortly.
+      <p className="mt-2 text-sm text-slate-600">
+        {status === "success"
+          ? "Thanks — I’ll get back to you shortly."
+          : "Thanks — I’ll get back to you shortly"}
+      </p>
+
+      <button
+        type="button"
+        onClick={() => setStatus("idle")}
+        className="mt-5 w-full rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white"
+      >
+        Close
+      </button>
+    </div>
   </div>
 )}
 
-{status === "error" && (
-  <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
-    ❌ Something went wrong. Please try again or message me on WhatsApp.
-  </div>
-)}
+
+
+              
 
             </div>
 
