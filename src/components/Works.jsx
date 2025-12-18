@@ -65,6 +65,28 @@ const Works = () => {
   const workItems = useMemo(
     () => [
       {
+  title: "FarmTrack — Remote Daily Farm Logs",
+  audience: "Farm owners, farm managers, agri-cooperatives, small/medium farms",
+  problem:
+    "Owners can’t monitor daily farm activity when they’re not on-site, and updates get lost across calls, WhatsApp messages, and notebooks—making it hard to track productivity and accountability.",
+  solution:
+    "A web app that lets farm teams submit structured daily logs (tasks, output, issues) while owners get a clear dashboard view of today’s and weekly activity—anywhere, anytime.",
+  includes: [
+    "Owner onboarding (create farm + first unit)",
+    "Role-based access (Owner / Worker)",
+    "Team invite flow (owner adds members)",
+    "Daily log creation (activities, output, issues)",
+    "Logs list + filtering (unit + date range)",
+    "Dashboard stats (Today’s logs + This week’s logs)",
+    "Worker visibility (view only logs they submitted)"
+  ],
+  outcome:
+    "Better visibility, stronger accountability, and consistent farm records—so owners can spot issues early and make better decisions without being physically present.",
+  status: "MVP-ready",
+  stack: ["React", "Tailwind", "Firebase Auth", "Firestore", "Vite"]
+},
+
+      {
         title: "Farmer Onboarding Portal",
         audience: "Input suppliers, NGOs, agrotech startups",
         problem:
